@@ -1,365 +1,419 @@
-<vxml xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" version="2.1">
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+ 
 <meta name="maintainer" content="YOUREMAILADDRESS@HERE.com"/>
-<!--  MAIN GRAMMAR  -->
+
+<!-- MAIN GRAMMAR --> 
 <link next="#MainMenu">
-<!--  The XML grammar for the main menu navigation.  -->
-<grammar xml:lang="en-US" root="LINKGRAM">
-<rule id="LINKGRAM" scope="public">
-<one-of>
-<item>main</item>
-</one-of>
-</rule>
+<!-- The XML grammar for the main menu navigation. -->
+<grammar xml:lang="en-US" root ="LINKGRAM">
+   <rule id="LINKGRAM" scope="public">
+   <one-of>
+     <item>main</item>
+   </one-of>
+   </rule>
 </grammar>
-<noinput>
-<prompt>I did not hear anything. Please try again.</prompt>
-<reprompt/>
-</noinput>
-<nomatch>
-<prompt>I did not recognize that choice. Please try again.</prompt>
-<reprompt/>
-</nomatch>
+
+   <noinput>
+    <prompt>
+     I did not hear anything. Please try again.
+    </prompt>
+    <reprompt/>
+   </noinput>
+ 
+   <nomatch>
+    <prompt>
+     I did not recognize that choice. Please try again.
+    </prompt>
+    <reprompt/>
+   </nomatch>
+
 </link>
-<!--  VARIABLES TO HOLD CUSTOMER ORDER  -->
+
+<!-- VARIABLES TO HOLD CUSTOMER ORDER --> 
 <var name="orderedBread"/>
 <var name="orderedMeat"/>
 <var name="orderedVegetable"/>
 <var name="orderedDrink"/>
-<var name="totalCost" expr="2"/>
-<var name="priceOfMeat" expr="3"/>
-<var name="priceOfVegetable" expr="0.5"/>
-<var name="priceOfDrink" expr="1"/>
-<!--  GREETING  -->
+
+<var name="totalCost" expr = "2"/>
+<var name="priceOfMeat" expr = "3"/>
+<var name="priceOfVegetable" expr = "0.5"/>
+<var name="priceOfDrink" expr = "1"/>
+
+<!-- GREETING -->
 <form id="MainMenu">
-<block>
-<prompt bargein="false">
-Welcome to The Sandwich shop, where the only thing on the menu is sandwiches. Let's start building your sandwich.
-</prompt>
-<goto next="#BreadMenu"/>
-</block>
+  <block>
+   <prompt bargein="false">
+    Welcome to The Sandwich shop, where the only thing on the menu is sandwiches. 
+    Let's start building your sandwich. 
+   </prompt>
+  <goto next ="#BreadMenu"/>
+  </block>
 </form>
-<!--  BREAD MENU  -->
+
+
+
+<!-- BREAD MENU -->
 <form id="BreadMenu">
-<field name="bread">
-<prompt count="1">
-What type of bread would you like? Wheat. Rye. Or sour dough. Bread costs two dollars.
-</prompt>
-<prompt count="2">
-Please say wheat for wheat bread, rye for rye bread, or sourdough for sourdough.
-</prompt>
-<!--  GRAMMAR FOR BREAD OPTIONS -->
-<grammar xml:lang="en-US" root="BREADOPTIONS">
-<rule id="BREADOPTIONS" scope="public">
-<one-of>
-<item>wheat</item>
-<item>rye</item>
-<item>sour dough</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<!--  INTERPRETATION OF USER RESPONSE  -->
+  <field name="bread">
+
+   <prompt count = "1">
+   What type of bread would you like? Wheat. Rye. Or sour dough. Bread costs two dollars.
+   </prompt>
+   <prompt count = "2">
+   Please say wheat for wheat bread, rye for rye bread, or sourdough for sourdough.
+   </prompt>
+
+   <!-- GRAMMAR FOR BREAD OPTIONS-->
+   <grammar xml:lang="en-US" root = "BREADOPTIONS">
+    <rule id="BREADOPTIONS" scope="public">
+     <one-of>
+      <item>wheat</item>
+      <item>rye</item>
+      <item>sour dough</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+<!-- INTERPRETATION OF USER RESPONSE --> 
 <filled>
-<if cond="bread == 'wheat'">
-<assign name="orderedBread" expr=" 'wheat' "/>
-<goto next="#BreadResponse"/>
-<elseif cond="bread == 'rye'"/>
-<assign name="orderedBread" expr=" 'rye' "/>
-<goto next="#BreadResponse"/>
-<elseif cond="bread == 'sour dough'"/>
-<assign name="orderedBread" expr=" 'sour dough' "/>
-<goto next="#BreadResponse"/>
-</if>
+   <if cond="bread == 'wheat'">
+      <assign name= "orderedBread" expr = " 'wheat' "/>
+      <goto next="#BreadResponse"/>
+   <elseif cond="bread == 'rye'"/>
+      <assign name= "orderedBread" expr = " 'rye' "/>
+      <goto next="#BreadResponse"/>
+   <elseif cond="bread == 'sour dough'"/>
+      <assign name= "orderedBread" expr = " 'sour dough' "/>
+      <goto next ="#BreadResponse"/>
+   </if>
 </filled>
 </form>
-<!-- BREAD RESPONSE -->
+
+<!--BREAD RESPONSE-->
 <form id="BreadResponse">
-<field name="BackToMain">
-<prompt>
-If you said.
-<value expr="orderedBread"/>
-Bread. please move forward by saying continue. Otherwise say back to correct the order.
-</prompt>
-<!--  GRAMMAR FOR BREAD RESPONSE OPTIONS -->
-<grammar xml:lang="en-US" root="BREADRESPONSE">
-<rule id="BREADRESPONSE" scope="public">
-<one-of>
-<item>continue</item>
-<item>back</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<filled>
-<if cond="BackToMain == 'continue'">
-<goto next="#MeatMenu"/>
-<elseif cond="BackToMain == 'back'"/>
-<goto next="#BreadMenu"/>
-</if>
-</filled>
+  <field name="BackToMain">
+   <prompt>
+    If you said. <value expr = "orderedBread"/> Bread. please move forward by saying continue. Otherwise say back to correct the order. 
+   </prompt>
+
+   <!-- GRAMMAR FOR BREAD RESPONSE OPTIONS-->
+   <grammar xml:lang="en-US" root = "BREADRESPONSE">
+    <rule id="BREADRESPONSE" scope="public">
+     <one-of>
+      <item>continue</item>
+      <item>back</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+   <filled>
+   <if cond="BackToMain == 'continue'">
+      <goto next="#MeatMenu"/>
+   <elseif cond="BackToMain == 'back'"/>
+      <goto next="#BreadMenu"/>
+   </if>
+  </filled>
 </form>
-<!--  MEAT MENU  -->
+ 
+
+
+
+<!-- MEAT MENU -->
 <form id="MeatMenu">
-<field name="meat">
-<prompt count="1">
-For three dollars, what type of meat would you like? Chicken. Meat ball. Or tuna fish.
-</prompt>
-<prompt count="2">
-Please say chicken to add chicken to your sandwich, meat ball to add meat balls to your sandwich, or tuna fish to add tuna fish to your sandwich.
-</prompt>
-<!--  GRAMMAR FOR MEAT OPTIONS -->
-<grammar xml:lang="en-US" root="MEATOPTIONS">
-<rule id="MEATOPTIONS" scope="public">
-<one-of>
-<item>chicken</item>
-<item>meat ball</item>
-<item>tuna fish</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<!--  INTERPRETATION OF USER RESPONSE  -->
+  <field name="meat">
+
+   <prompt count = "1">
+   For three dollars, what type of meat would you like? Chicken. Meat ball. Or tuna fish. 
+   </prompt>
+
+   <prompt count = "2">
+   Please say chicken to add chicken to your sandwich, meat ball to add meat balls to your sandwich, or tuna fish to add tuna fish to your sandwich. 
+   </prompt>
+ 
+   <!-- GRAMMAR FOR MEAT OPTIONS-->
+   <grammar xml:lang="en-US" root = "MEATOPTIONS">
+    <rule id="MEATOPTIONS" scope="public">
+     <one-of>
+      <item>chicken</item>
+      <item>meat ball</item>
+      <item>tuna fish</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+<!-- INTERPRETATION OF USER RESPONSE --> 
 <filled>
-<if cond="meat == 'chicken'">
-<assign name="orderedMeat" expr=" 'chicken' "/>
-<assign name="totalCost" expr="totalCost + priceOfMeat"/>
-<goto next="#MeatResponse"/>
-<elseif cond="meat == 'meat ball'"/>
-<assign name="orderedMeat" expr=" 'meat ball' "/>
-<assign name="totalCost" expr="totalCost + priceOfMeat"/>
-<goto next="#MeatResponse"/>
-<elseif cond="meat == 'tuna fish'"/>
-<assign name="orderedMeat" expr=" 'tuna fish' "/>
-<assign name="totalCost" expr="totalCost + priceOfMeat"/>
-<goto next="#MeatResponse"/>
-</if>
+   <if cond="meat == 'chicken'">
+      <assign name= "orderedMeat" expr = " 'chicken' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfMeat"/>
+      <goto next="#MeatResponse"/>
+   <elseif cond="meat == 'meat ball'"/>
+      <assign name= "orderedMeat" expr = " 'meat ball' "/>
+      <assign name= "totalCost" expr= "totalCost + priceOfMeat"/>
+      <goto next="#MeatResponse"/>
+   <elseif cond="meat == 'tuna fish'"/>
+      <assign name= "orderedMeat" expr = " 'tuna fish' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfMeat"/>
+      <goto next ="#MeatResponse"/>
+   </if>
 </filled>
 </form>
-<!-- MEAT RESPONSE -->
+
+<!--MEAT RESPONSE-->
 <form id="MeatResponse">
-<field name="BackToMain">
-<prompt>
-If you said
-<value expr="orderedMeat"/>
-, please move forward by saying continue. Otherwise say back to correct the order.
-</prompt>
-<!--  GRAMMAR FOR MEAT RESPONSE OPTIONS -->
-<grammar xml:lang="en-US" root="MEATRESPONSE">
-<rule id="MEATRESPONSE" scope="public">
-<one-of>
-<item>continue</item>
-<item>back</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<filled>
-<if cond="BackToMain == 'continue'">
-<goto next="#VegetableMenu"/>
-<elseif cond="BackToMain == 'back'"/>
-<assign name="totalCost" expr="totalCost - priceOfMeat"/>
-<goto next="#MeatMenu"/>
-</if>
-</filled>
+  <field name="BackToMain">
+   <prompt>
+    If you said <value expr = "orderedMeat"/>, please move forward by saying continue. Otherwise say back to correct the order. 
+   </prompt>
+
+   <!-- GRAMMAR FOR MEAT RESPONSE OPTIONS-->
+   <grammar xml:lang="en-US" root = "MEATRESPONSE">
+    <rule id="MEATRESPONSE" scope="public">
+     <one-of>
+      <item>continue</item>
+      <item>back</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+   <filled>
+   <if cond="BackToMain == 'continue'">
+      <goto next="#VegetableMenu"/>
+   <elseif cond="BackToMain == 'back'"/>
+      <assign name= "totalCost" expr= "totalCost - priceOfMeat"/>
+      <goto next="#MeatMenu"/>
+   </if>
+  </filled>
 </form>
-<!--  VEGETABLE MENU  -->
+
+
+
+
+<!-- VEGETABLE MENU -->
 <form id="VegetableMenu">
-<field name="vegetable">
-<prompt count="1">
-For fifty cents, what type of vegetable would you like? Lettuce.Tomato. Olives. Or Pickles. Or, if you don't want any vegetables please say none.
-</prompt>
-<prompt count="2">
-Please say lettuce to add lettuce to your sandwich, Tomato to add tomato to your sandwich, olives to add olives to your sandwich, or pickles to add pickles to your sandwich.
-</prompt>
-<!--  GRAMMAR FOR VEGETABLE OPTIONS -->
-<grammar xml:lang="en-US" root="VEGETABLEOPTIONS">
-<rule id="VEGETABLEOPTIONS" scope="public">
-<one-of>
-<item>lettuce</item>
-<item>tomato</item>
-<item>olives</item>
-<item>pickles</item>
-<item>none</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<!--  INTERPRETATION OF USER RESPONSE  -->
+  <field name="vegetable">
+
+   <prompt count = "1">
+   For fifty cents, what type of vegetable would you like? Lettuce.Tomato. Olives. Or Pickles. Or, if you don't want any vegetables please say none.
+   </prompt>
+
+   <prompt count = "2">
+   Please say lettuce to add lettuce to your sandwich, Tomato to add tomato to your sandwich, olives to add olives to your sandwich, or pickles to add pickles to your sandwich.
+   </prompt>
+ 
+   <!-- GRAMMAR FOR VEGETABLE OPTIONS-->
+   <grammar xml:lang="en-US" root = "VEGETABLEOPTIONS">
+    <rule id="VEGETABLEOPTIONS" scope="public">
+     <one-of>
+      <item>lettuce</item>
+      <item>tomato</item>
+      <item>olives</item>
+      <item>pickles</item>
+      <item>none</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+<!-- INTERPRETATION OF USER RESPONSE --> 
 <filled>
-<if cond="vegetable == 'lettuce'">
-<assign name="orderedVegetable" expr=" 'lettuce' "/>
-<assign name="totalCost" expr="totalCost + priceOfVegetable"/>
-<goto next="#VegetableResponse"/>
-<elseif cond="vegetable == 'tomato'"/>
-<assign name="orderedVegetable" expr=" 'tomato' "/>
-<assign name="totalCost" expr="totalCost + priceOfVegetable"/>
-<goto next="#VegetableResponse"/>
-<elseif cond="vegetable == 'olives'"/>
-<assign name="orderedVegetable" expr=" 'olives' "/>
-<assign name="totalCost" expr="totalCost + priceOfVegetable"/>
-<goto next="#VegetableResponse"/>
-<elseif cond="vegetable == 'pickles'"/>
-<assign name="orderedVegetable" expr=" 'pickles' "/>
-<assign name="totalCost" expr="totalCost + priceOfVegetable"/>
-<goto next="#VegetableResponse"/>
-<elseif cond="vegetable == 'none'"/>
-<assign name="orderedVegetable" expr=" 'no vegetables' "/>
-<goto next="#VegetableResponse"/>
-</if>
+   <if cond="vegetable == 'lettuce'">
+      <assign name= "orderedVegetable" expr = " 'lettuce' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfVegetable"/>
+      <goto next="#VegetableResponse"/>
+   <elseif cond="vegetable == 'tomato'"/>
+      <assign name= "orderedVegetable" expr = " 'tomato' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfVegetable"/>
+      <goto next="#VegetableResponse"/>
+   <elseif cond="vegetable == 'olives'"/>
+      <assign name= "orderedVegetable" expr = " 'olives' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfVegetable"/>
+      <goto next ="#VegetableResponse"/>
+   <elseif cond="vegetable == 'pickles'"/>
+      <assign name= "orderedVegetable" expr = " 'pickles' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfVegetable"/>
+      <goto next ="#VegetableResponse"/>
+   <elseif cond="vegetable == 'none'"/>
+      <assign name= "orderedVegetable" expr = " 'no vegetables' "/>
+      <goto next ="#VegetableResponse"/>
+   </if>
 </filled>
 </form>
-<!-- VEGETABLE RESPONSE -->
+
+<!--VEGETABLE RESPONSE-->
 <form id="VegetableResponse">
-<field name="BackToMain">
-<prompt>
-If you said
-<value expr="orderedVegetable"/>
-, please move forward by saying continue. Otherwise say back to correct the order.
-</prompt>
-<!--  GRAMMAR FOR VEGETABLE RESPONSE OPTIONS -->
-<grammar xml:lang="en-US" root="VEGETABLERESPONSE">
-<rule id="VEGETABLERESPONSE" scope="public">
-<one-of>
-<item>continue</item>
-<item>back</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<filled>
-<if cond="BackToMain == 'continue'">
-<goto next="#AskAboutDrink"/>
-<elseif cond="BackToMain == 'back'"/>
-<assign name="totalCost" expr="totalCost - priceOfVegetable"/>
-<goto next="#VegetableMenu"/>
-</if>
-</filled>
+  <field name="BackToMain">
+   <prompt>
+    If you said <value expr = "orderedVegetable"/>, please move forward by saying continue. Otherwise say back to correct the order. 
+   </prompt>
+
+   <!-- GRAMMAR FOR VEGETABLE RESPONSE OPTIONS-->
+   <grammar xml:lang="en-US" root = "VEGETABLERESPONSE">
+    <rule id="VEGETABLERESPONSE" scope="public">
+     <one-of>
+      <item>continue</item>
+      <item>back</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+   <filled>
+   <if cond="BackToMain == 'continue'">
+      <goto next="#AskAboutDrink"/>
+   <elseif cond="BackToMain == 'back'"/>
+      <assign name= "totalCost" expr = "totalCost - priceOfVegetable"/>
+      <goto next="#VegetableMenu"/>
+   </if>
+  </filled>
 </form>
-<!--  DRINK PROMPT  -->
+ 
+
+<!-- DRINK PROMPT -->
 <form id="AskAboutDrink">
-<field name="ask">
-<prompt>
-Would you like to add a drink to your order for just one dollar?
-</prompt>
-<!--  GRAMMAR FOR DRINK ASK -->
-<grammar xml:lang="en-US" root="DRINKASK">
-<rule id="DRINKASK" scope="public">
-<one-of>
-<item>yes</item>
-<item>no</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<filled>
-<if cond="ask == 'yes'">
-<goto next="#DrinkMenu"/>
-<elseif cond="ask == 'no'"/>
-<goto next="#ReviewOrder"/>
-</if>
-</filled>
+  <field name="ask">
+   <prompt>
+   Would you like to add a drink to your order for just one dollar?
+   </prompt>
+
+   <!-- GRAMMAR FOR DRINK ASK-->
+   <grammar xml:lang="en-US" root = "DRINKASK">
+    <rule id="DRINKASK" scope="public">
+     <one-of>
+      <item>yes</item>
+      <item>no</item>
+     </one-of>
+    </rule>
+   </grammar>
+
+  </field>
+
+  <filled>
+   <if cond="ask == 'yes'">
+      <goto next="#DrinkMenu"/>
+   <elseif cond="ask == 'no'"/>
+      <goto next="#ReviewOrder"/>
+   </if>
+  </filled>
 </form>
-<!--  DRINK MENU  -->
+
+<!-- DRINK MENU -->
 <form id="DrinkMenu">
-<field name="drink">
-<prompt count="1">Would you like coke, pepsi, or seven up?</prompt>
-<prompt count="2">
-Please say coke, pepsi, or seven up to place your order.
-</prompt>
-<!--  GRAMMAR FOR DRINK OPTIONS -->
-<grammar xml:lang="en-US" root="DRINKOPTIONS">
-<rule id="DRINKOPTIONS" scope="public">
-<one-of>
-<item>coke</item>
-<item>pepsi</item>
-<item>seven up</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<!--  INTERPRETATION OF USER RESPONSE  -->
+  <field name="drink">
+
+   <prompt count = "1">
+   Would you like coke, pepsi, or seven up?
+   </prompt>
+
+   <prompt count = "2">
+   Please say coke, pepsi, or seven up to place your order.
+   </prompt>
+ 
+   <!-- GRAMMAR FOR DRINK OPTIONS-->
+   <grammar xml:lang="en-US" root = "DRINKOPTIONS">
+    <rule id="DRINKOPTIONS" scope="public">
+     <one-of>
+      <item>coke</item>
+      <item>pepsi</item>
+      <item>seven up</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+<!-- INTERPRETATION OF USER RESPONSE --> 
 <filled>
-<if cond="drink == 'coke'">
-<assign name="orderedDrink" expr=" 'coke' "/>
-<assign name="totalCost" expr="totalCost + priceOfDrink"/>
-<goto next="#DrinkResponse"/>
-<elseif cond="drink == 'pepsi'"/>
-<assign name="orderedDrink" expr=" 'pepsi' "/>
-<assign name="totalCost" expr="totalCost + priceOfDrink"/>
-<goto next="#DrinkResponse"/>
-<elseif cond="drink == 'seven up'"/>
-<assign name="orderedDrink" expr=" 'seven up' "/>
-<assign name="totalCost" expr="totalCost + priceOfDrink"/>
-<goto next="#DrinkResponse"/>
-</if>
+   <if cond="drink == 'coke'">
+      <assign name= "orderedDrink" expr = " 'coke' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfDrink"/>
+      <goto next="#DrinkResponse"/>
+   <elseif cond="drink == 'pepsi'"/>
+      <assign name= "orderedDrink" expr = " 'pepsi' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfDrink"/>
+      <goto next="#DrinkResponse"/>
+   <elseif cond="drink == 'seven up'"/>
+      <assign name= "orderedDrink" expr = " 'seven up' "/>
+      <assign name= "totalCost" expr = "totalCost + priceOfDrink"/>
+      <goto next ="#DrinkResponse"/>
+   </if>
 </filled>
 </form>
-<!-- DRINK RESPONSE -->
+
+<!--DRINK RESPONSE-->
 <form id="DrinkResponse">
-<field name="BackToMain">
-<prompt>
-If you said
-<value expr="orderedDrink"/>
-, please move forward by saying continue. Otherwise say back to correct the order.
-</prompt>
-<!--  GRAMMAR FOR DRINK RESPONSE OPTIONS -->
-<grammar xml:lang="en-US" root="DRINKRESPONSE">
-<rule id="DRINKRESPONSE" scope="public">
-<one-of>
-<item>continue</item>
-<item>back</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<filled>
-<if cond="BackToMain == 'continue'">
-<goto next="#ReviewOrder"/>
-<elseif cond="BackToMain == 'back'"/>
-<assign name="totalCost" expr="totalCost - priceOfDrink"/>
-<goto next="#DrinkMenu"/>
-</if>
-</filled>
+  <field name="BackToMain">
+   <prompt>
+    If you said <value expr = "orderedDrink"/>, please move forward by saying continue. Otherwise say back to correct the order. 
+   </prompt>
+
+   <!-- GRAMMAR FOR DRINK RESPONSE OPTIONS-->
+   <grammar xml:lang="en-US" root = "DRINKRESPONSE">
+    <rule id="DRINKRESPONSE" scope="public">
+     <one-of>
+      <item>continue</item>
+      <item>back</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+   <filled>
+   <if cond="BackToMain == 'continue'">
+      <goto next="#ReviewOrder"/>
+   <elseif cond="BackToMain == 'back'"/>
+      <assign name= "totalCost" expr = "totalCost - priceOfDrink"/>
+      <goto next="#DrinkMenu"/>
+   </if>
+  </filled>
 </form>
-<!--  REVIEW ORDER  -->
+
+
+
+
+
+<!-- REVIEW ORDER -->
 <form id="ReviewOrder">
-<field name="review">
-<prompt>
-Your order is now complete. I have you down as placing an order for a
-<value expr="orderedMeat"/>
-sandwich with
-<value expr="orderedVegetable"/>
-on
-<value expr="orderedBread"/>
-bread for
-<value expr="totalCost"/>
-dollars. If that is correct and you would like to proceed to check out please say continue. Otherwise, if there is something wrong with your order and you would like to change it please say change order.
-</prompt>
-<!--  GRAMMAR FOR REVIEWING ORDER  -->
-<grammar xml:lang="en-US" root="REVIEWORDER">
-<rule id="REVIEWORDER" scope="public">
-<one-of>
-<item>continue</item>
-<item>change order</item>
-</one-of>
-</rule>
-</grammar>
-</field>
-<!--  INTERPRETATION OF USER RESPONSE  -->
+  <field name="review">
+
+   <prompt>
+   Your order is now complete. I have you down as placing an order for a <value expr = "orderedMeat"/> sandwich with <value expr = "orderedVegetable"/> on <value expr = "orderedBread"/> bread for <value expr="totalCost"/> dollars. If that is correct and you would like to proceed to check out please say continue. Otherwise, if there is something wrong with your order and you would like to change it please say change order.
+   </prompt>
+ 
+   <!-- GRAMMAR FOR REVIEWING ORDER -->
+   <grammar xml:lang="en-US" root = "REVIEWORDER">
+    <rule id="REVIEWORDER" scope="public">
+     <one-of>
+      <item>continue</item>
+      <item>change order</item>
+     </one-of>
+    </rule>
+   </grammar>
+  </field>
+
+<!-- INTERPRETATION OF USER RESPONSE --> 
 <filled>
-<if cond="review == 'continue'">
-<goto next="#Checkout"/>
-<elseif cond="review == 'change order'"/>
-<assign name="totalCost" expr="2"/>
-<goto next="#BreadMenu"/>
-</if>
+   <if cond="review == 'continue'">
+      <goto next="#Checkout"/>
+   <elseif cond="review == 'change order'"/>
+      <assign name= "totalCost" expr = "2"/>
+      <goto next="#BreadMenu"/>
+   </if>
 </filled>
 </form>
-<!-- CHECK OUT -->
+
+<!--CHECK OUT-->
 <form id="Checkout">
-<field name="finished">
-<prompt>
-Your sandwich order will now be placed. Thank you. Good bye.
-</prompt>
-</field>
+  <field name="finished">
+   <prompt>
+    Your sandwich order will now be placed. Thank you. Good bye. 
+   </prompt>
+  </field>
 </form>
+
 </vxml>
